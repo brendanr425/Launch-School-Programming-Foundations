@@ -5,34 +5,65 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def clear
+  system('clear') || system('cls')
+end
+
+loan_amt = nil
+apr = nil
+loan_duration_years = nil
+
 loop do
+
+  clear
+
   prompt(MESSAGES['welcome'])
 
   prompt(MESSAGES['loan_amount'])
-  loan_amt = gets.to_f
+  loop do
+    loan_amt = gets.to_f
+    break unless loan_amt == 0
+    prompt(MESSAGES['invalid_input'])
+  end
+
+  clear
 
   prompt(MESSAGES['annual_percentage_rate'])
-  apr = gets.to_f / 100
+  loop do
+    apr = (gets.to_f/100)
+    break unless apr == 0
+    prompt(MESSAGES['invalid_input'])
+  end
+
+  clear
 
   prompt(MESSAGES['loan_duration'])
-  loan_duration_y = gets.to_i
+  loop do
+    loan_duration_years = gets.to_i
+    break unless loan_duration_years == 0
+    prompt(MESSAGES['invalid_input'])
+  end
 
-  loan_duration_m = loan_duration_y * 12
-  m_rate = apr / loan_duration_m
+  clear
 
-  prompt(format(MESSAGES['monthly_interest'], interest: m_rate.round(3)))
+  loan_duration_months = loan_duration_years * 12
+  monthly_rate = apr / loan_duration_months
 
-  prompt(format(MESSAGES['loan_duration_months'], months: loan_duration_m))
+  prompt(format(MESSAGES['monthly_interest'], interest: monthly_rate.round(3)))
 
-  m_pay = loan_amt * (m_rate / (1 - (1 + m_rate)**(-loan_duration_m)))
+  prompt(format(MESSAGES['loan_duration_months'], months: loan_duration_months))
 
-  prompt(format(MESSAGES['monthly_payment'], payment: m_pay.round(2)))
+  monthly_pay = loan_amt * (monthly_rate / (1 - ((1 + monthly_rate)**(-loan_duration_months))))
+
+  prompt(format(MESSAGES['monthly_payment'], payment: monthly_pay.round(2)))
 
   prompt(MESSAGES['another_calculation'])
   answer = gets.chomp
-
+  
   break if answer != 'y' && answer != 'Y'
 end
+
+clear
 
 prompt(MESSAGES['thank_you'])
 
