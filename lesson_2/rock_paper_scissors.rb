@@ -8,20 +8,23 @@ def clear
   system('clear') || system('cls')
 end
 
-def winner(choice_1, choice_2)
-  winning_combinations = {'r' => ['sc', 'l'], 
-                          'p' => ['r', 'sp'],
-                          'sc'=> ['p', 'l'],
-                          'sp'=> ['r', 'sc'],
-                          'l' => ['sp', 'p'],
-                         }
-  return true if winning_combinations[choice_1].include?(choice_2)
-  return false
+def winner(choice1, choice2)
+  winning_combinations = { 'r' => ['sc', 'l'],
+                           'p' => ['r', 'sp'],
+                           'sc' => ['p', 'l'],
+                           'sp' => ['r', 'sc'],
+                           'l' => ['sp', 'p'] }
+  return true if winning_combinations[choice1].include?(choice2)
+  false
 end
 
 user_choice = ''
 
-abbreviations = {'r' => 'rock', 'p' => 'paper', 'sc' => 'scissors', 'l' => 'lizard', 'sp' => 'spock'}
+abbreviations = { 'r' => 'rock',
+                  'p' => 'paper',
+                  'sc' => 'scissors',
+                  'l' => 'lizard',
+                  'sp' => 'spock' }
 
 clear
 
@@ -38,6 +41,7 @@ loop do
       if VALID_ANSWERS.include?(user_choice) == true
         break
       end
+
       clear
       prompt("Invalid input. Try again!")
       prompt("You: #{user_wins} | Computer: #{computer_wins}")
@@ -51,15 +55,14 @@ loop do
     if winner(user_choice, computer_choice) == true
       prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. You win!")
       user_wins += 1
-      prompt("You: #{user_wins} | Computer: #{computer_wins}")
     elsif winner(computer_choice, user_choice) == true
       prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. You lose.")
       computer_wins += 1
-      prompt("You: #{user_wins} | Computer: #{computer_wins}")
     else
       prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. It's a tie!")
-      prompt("You: #{user_wins} | Computer: #{computer_wins}")
     end
+
+    prompt("You: #{user_wins} | Computer: #{computer_wins}")
 
     break if user_wins == 5 || computer_wins == 5
   end
