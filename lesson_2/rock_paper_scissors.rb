@@ -85,8 +85,3 @@ end
 clear
 
 prompt("Thank you for playing!")
-
-  
-
-
-
