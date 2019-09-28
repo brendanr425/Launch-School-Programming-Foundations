@@ -9,40 +9,40 @@ def clear
   system('clear') || system('cls')
 end
 
+def retrieve_amount
+  loop do
+    loan_amt = gets.to_f
+    return loan_amt unless loan_amt <= 0
+    clear
+    prompt(MESSAGES['invalid_input'])
+  end
+end
+
+def monthly_payment_calculation(loan_total, rate_by_month, loan_span_months)
+  loan_total * (rate_by_month / (1 - ((1 + rate_by_month)**(-loan_span_months))))
+end
+
 loan_amt = nil
 apr = nil
 loan_duration_years = nil
 
 loop do
-
   clear
 
   prompt(MESSAGES['welcome'])
 
   prompt(MESSAGES['loan_amount'])
-  loop do
-    loan_amt = gets.to_f
-    break unless loan_amt == 0
-    prompt(MESSAGES['invalid_input'])
-  end
+  loan_amt = retrieve_amount
 
   clear
 
   prompt(MESSAGES['annual_percentage_rate'])
-  loop do
-    apr = (gets.to_f/100)
-    break unless apr == 0
-    prompt(MESSAGES['invalid_input'])
-  end
+  apr = retrieve_amount / 100
 
   clear
 
   prompt(MESSAGES['loan_duration'])
-  loop do
-    loan_duration_years = gets.to_i
-    break unless loan_duration_years == 0
-    prompt(MESSAGES['invalid_input'])
-  end
+  loan_duration_years = retrieve_amount
 
   clear
 
@@ -51,9 +51,9 @@ loop do
 
   prompt(format(MESSAGES['monthly_interest'], interest: monthly_rate.round(3)))
 
-  prompt(format(MESSAGES['loan_duration_months'], months: loan_duration_months))
+  prompt(format(MESSAGES['loan_duration_months'], months: loan_duration_months.floor))
 
-  monthly_pay = loan_amt * (monthly_rate / (1 - ((1 + monthly_rate)**(-loan_duration_months))))
+  monthly_pay = monthly_payment_calculation(loan_amt, monthly_rate, loan_duration_months)
 
   prompt(format(MESSAGES['monthly_payment'], payment: monthly_pay.round(2)))
 
@@ -66,7 +66,6 @@ end
 clear
 
 prompt(MESSAGES['thank_you'])
-
 
 
 
