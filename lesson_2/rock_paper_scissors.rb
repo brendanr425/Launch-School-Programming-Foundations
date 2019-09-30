@@ -8,23 +8,27 @@ def clear
   system('clear') || system('cls')
 end
 
+def display_choices(from_user, from_computer)
+  abbreviations = { 'r' => 'rock',
+                    'p' => 'paper',
+                    'sc' => 'scissors',
+                    'l' => 'lizard',
+                    'sp' => 'spock' }
+  "You chose #{abbreviations[from_user]} and the computer " \
+  "chose #{abbreviations[from_computer]}."
+end
+
 def winner(choice1, choice2)
   winning_combinations = { 'r' => ['sc', 'l'],
                            'p' => ['r', 'sp'],
                            'sc' => ['p', 'l'],
                            'sp' => ['r', 'sc'],
                            'l' => ['sp', 'p'] }
-  return true if winning_combinations[choice1].include?(choice2)
-  false
+  winning_combinations[choice1].include?(choice2)
 end
 
 user_choice = ''
-
-abbreviations = { 'r' => 'rock',
-                  'p' => 'paper',
-                  'sc' => 'scissors',
-                  'l' => 'lizard',
-                  'sp' => 'spock' }
+play_again = ''
 
 clear
 
@@ -35,10 +39,11 @@ loop do
   computer_wins = 0
   loop do
     loop do
-      prompt("Type 'R' for rock, 'P' for paper, 'Sc' for scissors, 'L' for lizard, or 'Sp' for spock:")
+      prompt("Type 'R' for rock, 'P' for paper, 'Sc' for scissors, " \
+             "'L' for lizard, or 'Sp' for spock:")
       user_choice = gets.chomp.downcase
 
-      if VALID_ANSWERS.include?(user_choice) == true
+      if VALID_ANSWERS.include?(user_choice)
         break
       end
 
@@ -52,14 +57,14 @@ loop do
 
     clear
 
-    if winner(user_choice, computer_choice) == true
-      prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. You win!")
+    if winner(user_choice, computer_choice)
+      prompt("#{display_choices(user_choice, computer_choice)} You win!")
       user_wins += 1
-    elsif winner(computer_choice, user_choice) == true
-      prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. You lose.")
+    elsif winner(computer_choice, user_choice)
+      prompt("#{display_choices(user_choice, computer_choice)} You lose.")
       computer_wins += 1
     else
-      prompt("You chose #{abbreviations[user_choice]} and the computer chose #{abbreviations[computer_choice]}. It's a tie!")
+      prompt("#{display_choices(user_choice, computer_choice)} It's a tie!")
     end
 
     prompt("You: #{user_wins} | Computer: #{computer_wins}")
@@ -73,13 +78,15 @@ loop do
     prompt("You've lost five rounds of RPSLS.")
   end
 
-  prompt("Press 'Y' to play again or any other key to exit.")
+  loop do
+    prompt("Press 'Y' to play again or 'N' to exit.")
+    play_again = gets.chomp
+    clear
+    break if play_again.downcase == 'n' || play_again.downcase == 'y'
+    prompt("Invalid input.")
+  end
 
-  play_again = gets.chomp
-
-  clear
-
-  break if play_again.downcase != 'y'
+  break if play_again.downcase == 'n'
 end
 
 clear
