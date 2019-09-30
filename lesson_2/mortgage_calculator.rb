@@ -11,8 +11,8 @@ end
 
 def retrieve_amount
   loop do
-    loan_amt = gets.to_f
-    return loan_amt unless loan_amt <= 0
+    amount = gets.to_f
+    return amount unless amount <= 0
     clear
     prompt(MESSAGES['invalid_input'])
   end
