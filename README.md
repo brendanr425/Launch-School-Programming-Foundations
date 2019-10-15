@@ -1,1 +1,1 @@
-# Lesson-2-Small-Programs
+# Programming Foundations
