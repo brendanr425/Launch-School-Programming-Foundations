@@ -1,0 +1,21 @@
+A: 
+one is: one
+two is: two
+three is: three
+
+Explanation: Even though the parameters of mess_with_vars are set equal to different values, the '=' method is non-destructive. Therefore, the function will not affect the values of each variable beyond its scope. 
+
+B: 
+one is: one
+two is: two
+three is: three
+
+Explanation: The results remain the same as the previous code group even though the strings are defined within the function. 
+
+C: 
+one is: two
+two is: three
+three is: one
+
+Explanation: The 'gsub!' method becomes destructive after adding bang operator '!'. Therefore, the function will alter the values of each variable beyond its scope.
+

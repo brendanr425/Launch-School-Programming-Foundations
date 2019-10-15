@@ -1,0 +1,3 @@
+'.delete_at' will delete an array's element at a given index based on the argument provided. Therefore, 'numbers.delete_at(1)' will delete the element '2' because it's located at 'numbers[1]'.
+
+'.delete' will simply delete an array's element that matches the given argument. Therefore, 'numbers.delete(1)' will delete the element '1' because it matches the argument provided. 

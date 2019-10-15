@@ -1,0 +1,1 @@
+This code will result in an error, because the 'greeting' varibale will remain undefined as a result of the 'if' condition.

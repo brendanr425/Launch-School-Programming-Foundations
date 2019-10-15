@@ -1,0 +1,12 @@
+Lines 1-15: All of the variables that share the same value/data type will have the same object ID. 
+
+Lines 19-27: Once redefined inside of the block, the newly-assigned inner IDs will have the same values as the outer IDs. 
+
+Lines 30-38: After reassignment, all 4 variables will have different object IDs. 
+
+Lines 42-56: The inner ID variables will have the same object IDs as the outer ID variables. 
+
+Lines 59-62: The outer variables will have different object IDs from the variables inside the block.
+
+Lines 65-68: The rescue statements will be output, because the inner variables aren't defined outside of the block. 
+

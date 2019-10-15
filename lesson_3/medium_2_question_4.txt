@@ -1,0 +1,7 @@
+Output: 
+My string looks like this now: pumpkinsrutabaga
+My array looks like this now: ["pumpkins"]
+
+Since the '<<' method is destructive (as demonstrated in the previous exercise) it will alter the value of 'my_string'. 
+
+The array will not be affected, because '=' is not a destructive method.

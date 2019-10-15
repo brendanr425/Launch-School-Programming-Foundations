@@ -1,0 +1,1 @@
+The values of each variable remain the same after the method call. This is due to the fact that the paramters within the method are entirely separate from the variables defined outside of the method. They simply act as pointers to the original variables that have been passed as arguments. 

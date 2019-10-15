@@ -1,0 +1,13 @@
+'!' and '?' in Ruby have different functions. Listed below are explanations of the aforementioned scenarios: 
+
+- '!=' will return a boolean value when comparing values. It will return 'true' if two expressions are unequal and 'false' if they're equal. 
+
+- Putting '!' before an expression will return it's boolean opposite. For example, '!true' is equivalent to 'false'. 
+
+- Attaching '!' to certain methods, such as '.uniq!', will result in mutation of an expression rather than creating an altered copy. The location of said expression in memory will remain the same rather than being stored elsewhere. 
+
+- '?' is often utilized as a ternary operator when put before expressions. Ternary operators act as as alternative to 'if' statements that only have two conditions. 
+
+- '?' is often attached to methods that return a boolean value. For example, '.include?' will check if the argument provided is present within a given range, array, string, etc., and return a boolean expression. 
+
+- Putting '!!' before an expression will return it's boolean equivalent. For example, '!!true' is equal to 'true'.

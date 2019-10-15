@@ -1,0 +1,7 @@
+Output: 
+My string looks like this now: pumpkins
+My array looks like this now: ["pumpkins", "rutabaga"]
+
+The method used on 'a_string_param' is non-destructive. Therefore, it won't alter the value of the original string, but simply create an altered copy. 
+
+In contrast, the method used on 'an_array_param' is destructive. Therefore, the original value of the array will be altered by adding a new element.

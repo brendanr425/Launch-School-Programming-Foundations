@@ -1,0 +1,6 @@
+Answer:
+1
+2
+3
+
+Explanation: Ruby's 'uniq' method will remove any repeating elements from an array. 

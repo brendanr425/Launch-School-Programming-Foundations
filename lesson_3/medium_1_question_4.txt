@@ -1,0 +1,1 @@
+The essential difference between 'rolling_buffer1' and 'rolling_buffer2' is that one uses the destructive method '<<' which will modify 'buffer' outside of the method and the other uses '+' which will simply create an altered copy of the original array. 

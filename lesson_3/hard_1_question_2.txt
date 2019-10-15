@@ -1,0 +1,1 @@
+The result of the last line of code will be 'hi there'. The informal_greeting variable becomes a reference to the greetings hash once it's initialized to greetings[:a]. Therefore, when the destructive method '<<' is used on informal_greeting, it also affects the value of greetings[:a].
