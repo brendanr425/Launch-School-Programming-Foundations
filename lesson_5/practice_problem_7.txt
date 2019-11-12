@@ -1,0 +1,18 @@
+a = 2 
+b = [5, 8]
+arr = [a, b]
+
+arr[0] += 2
+arr[1][0] -= a
+
+Line 1: The variable 'a' is assigned a value of 2. 
+
+Line 2: The variable 'b' is assigned a value of [5, 8]
+
+Line 3: The variable 'arr' is assigned a value of [2, [5, 8]]
+
+Line 5: The first element of 'arr' is incremented by 2: [4, [5, 8]]
+
+Line 6: The first element of the sub-array is decremented by 2: [4, [3, 8]]
+
+The final value of arr is [4, [3, 8]].

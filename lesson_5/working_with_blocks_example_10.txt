@@ -1,0 +1,31 @@
+[[[1, 2], [3, 4]], [5, 6]].map do |arr|
+  arr.map do |el|
+    if el.to_s.size == 1    # it's an integer
+      el + 1
+    else                    # it's an array
+      el.map do |n|
+        n + 1
+      end
+    end
+  end
+end
+
+Line 1: 'map' is called on the outer array. 
+
+Lines 1-11: Outer block execution
+
+Line 2: 'map' is called on the block parameter (sub-arrays). 
+
+Lines 2-10: First inner block execution
+
+Lines 3-9: Conditional execution
+
+Lines 3-5: If the current block parameter 'el' is a single-digit integer, it's incremented by 1. 
+
+Lines 5-9: If the current block parameter 'el' is an array, use 'map'. 
+
+Lines 6-8: Second inner block execution
+
+Line 7: The block parameter 'n' (which represents a sub-array) will have each element incremented by 1. 
+
+Outer block return value: [[[2, 3], [4, 5]], [6, 7]]

@@ -1,0 +1,49 @@
+my_arr = [[18, 7], [3, 12]].each do |arr|
+  arr.each do |num|
+    if num > 5
+      puts num
+    end
+  end
+end
+
+Line 1
+- Action: variable assignment/method call (each)
+- Object: The outer array
+- Side Effect: None
+- Return Value: The original array
+- Is Return Value Used?: No
+
+Line 1-7
+- Action: Block execution 
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: Each sub-array
+- Is Return Value Used?: No
+
+Line 2
+- Action: method call (each)
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: The calling object
+- Is Return Value Used?: Yes, used to determine return value of block
+
+Line 2-5
+- Action: Block execution
+- Object: Each element of sub-arrays
+- Side Effect: None
+- Return Value: nil
+- Is Return Value Used?: No
+
+Line 3-5
+- Action: if statement execution
+- Object: Each element of sub-arrays
+- Side Effect: None
+- Return Value: nil
+- Is Return Value Used?: Yes, used to determine return value of block
+
+Line 4
+- Action: Method call (puts)
+- Object: Each element of sub-arrays
+- Side Effect: Outputs num if num > 5
+- Return Value: nil 
+- Is Return Value Used?: Yes, used to determine return value of block

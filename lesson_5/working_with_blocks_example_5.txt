@@ -1,0 +1,40 @@
+[[1, 2], [3, 4]].map do |arr|
+  arr.map do |num|
+    num * 2
+  end
+end
+
+Line 1
+- Action: Method call (map)
+- Object: Outer array
+- Side Effect: None
+- Return Value: New array [[2, 4], [6, 8]]
+- Is Return Value Used? No
+
+Line 1-5
+- Action: Outer block execution 
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: New array [[2, 4], [6, 8]] 
+- Is Return Value Used? Yes, used to determine the return value of the block 
+
+Line 2
+- Action: Method call (map)
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: Each sub-array transformation 
+- Is Return Value Used? Yes, used to determine the value of the outer block 
+
+Line 2-4
+- Action: Inner block execution 
+- Object: Each element of each sub-array
+- Side Effect: None
+- Return Value: Each sub-array element transformation 
+- Is Return Value Used? Yes, used to determine return value of inner block
+
+Line 3
+- Action: Multiplication of block parameter by 2
+- Object: Each element of sub-arrays
+- Side Effect: None
+- Return Value: Product of sub-array element and 2.
+- Is Return Value Used? Yes, used to determine the value of inner block

@@ -1,0 +1,39 @@
+[[1, 2], [3, 4]].map do |arr|
+  puts arr.first
+  arr.first
+end
+
+Line 1: 
+- Action: method call (map)
+- Object: The outer array
+- Side Effect: None
+- Return Value: New array [1, 3]
+- Is Return Value Used?: No
+
+Line 1-4
+- Action: block execution 
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: Element at index 0 of sub-array
+- Is Return Value Used?: Yes, used by map for transformation
+
+Line 2
+- Action: method call (first)
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: Element at index 0 of sub-array
+- Is Return Value Used?: Yes, used by puts
+
+Line 2
+- Action: method call (puts)
+- Object: Element at index 0 of each sub-array
+- Side Effect: Outputs a string representation of an Integer
+- Return Value: nil
+- Is Return Value Used?: No
+
+Line 3 
+- Action: method call (first)
+- Object: Each sub-array
+- Side Effect: None
+- Return Value: Element at index 0 of sub-array
+- Is Return Value Used?: Yes, used to determine return value of block

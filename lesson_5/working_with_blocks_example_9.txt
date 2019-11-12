@@ -1,0 +1,23 @@
+[[[1], [2], [3], [4]], [['a'], ['b'], ['c']]].map do |element1|
+  element1.each do |element2|
+    element2.partition do |element3|
+      element3.size > 0
+    end
+  end
+end
+
+Line 1: 'map' is called on the outer array. 
+
+Lines 1-7: Execution of the outer block. 
+
+Line 2: 'each' is called on the first sub-array 'element1'
+
+Lines 2-6: Execution of the first inner block 
+
+Line 3: 'partition' is called on the second sub-array 'element2'
+
+Lines 3-5: Execution of the second inner block
+
+Line 4: Comparison of element in second sub-array to 0. 
+
+Explanation: The return value of the method call 'map' on the outer array returns a new array identical to the original. This is because the first inner block 'each' will always return the calling object. The partition method doesn't do anything in this example since all of the triple-nested elements are greater than 0.

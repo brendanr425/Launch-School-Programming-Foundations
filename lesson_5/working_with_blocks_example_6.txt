@@ -1,0 +1,24 @@
+[{ a: 'ant', b: 'elephant' }, { c: 'cat' }].select do |hash|
+  hash.all? do |key, value|
+    value[0] == key.to_s
+  end
+end
+
+
+Line 1: Calls the select method on the array
+
+Lines 1-5: Execution of the outer block 
+
+Line 2: Calls the all? method on the block parameter
+
+Lines 2-4: Execution of the inner block
+
+Line 3: Returns a boolean depending on the key and first index of the value. 
+
+Return value: [{ :c => "cat"}]
+
+Explanation: The select method will return an array depending on the 'truthiness' of the outer block's return value. Within said block, the all? method is used on the block parameter (each hash in the array). Within the inner block, the first letter of 'value' is compared with the symbol 'key' converted to a string using '=='. Since the all? method is used to check if the specified condition applies to all of the key/value pairs within the hash, the first pair ({a: 'ant', b: 'elephant'}) evaluates to false. However, the following hash ({c: 'cat'}) evaluates to true, because all of the key/value pairs within it evaluate to true when the inner block is executed. Therefore, select returns an array containing the hash { :c => "cat"}.
+
+Bonus question: What would happen if, instead of using all?, we used any?. Why would this affect the return value of select?
+
+Bonus question answer: Contrary to the all? method, any? will check if the block's return value ever evaluates to true. If so, it will return true. Therefore, the outer method call would simply return a new array identical to the original.
