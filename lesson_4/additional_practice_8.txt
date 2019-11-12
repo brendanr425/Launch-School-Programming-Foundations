@@ -1,0 +1,9 @@
+The first set of code prints the following: 
+1
+3
+
+The second set of code prints the following: 
+1
+2
+
+Explanation: Since the block within these enumerables are removing elements as they iterate, some of the numbers aren't printed. The indices that correspond to each element will continue to increment by 1 regardless of how the array is altered. Therefore, the indices of the given elements will change, but the index counter will run its usual course.

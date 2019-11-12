@@ -1,0 +1,1 @@
+The 'shift' method when used on a hash will remove the first key/value pair and return it as an array containing two elements. In this case, it will return [:a, 'ant'].

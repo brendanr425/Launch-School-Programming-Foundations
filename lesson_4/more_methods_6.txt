@@ -1,0 +1,1 @@
+Ruby's 'pop' method will remove the last element of an array and return it. Ruby's 'size' method will determine the number of characters in a string. Therefore, since the return value of 'pop' in this case is caterpillar and 'size' will determine it's number of characters, this statement will return 11.

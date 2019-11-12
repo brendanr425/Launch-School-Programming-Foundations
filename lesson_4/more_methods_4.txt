@@ -1,0 +1,4 @@
+Answer: The return value of each_with_object in this case will be: {'a' => 'ant', 'b' => 'bear', 'c' => 'cat'}
+
+Explanation: Ruby's each_with_object will accept an argument (in this case an empty hash) and return it. In this example, the newly-formed hash will be assinged key/value pairs where the key is the 0th index of the string and its associated value is just the string itself.
+

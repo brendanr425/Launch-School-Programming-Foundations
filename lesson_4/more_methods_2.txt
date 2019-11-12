@@ -1,0 +1,1 @@
+The 'count' method can be found by consulting Ruby's documentation. It returns the number of times the block's condition will evaluate to true based on the block parameter.

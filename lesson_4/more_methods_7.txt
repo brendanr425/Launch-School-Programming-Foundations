@@ -1,0 +1,1 @@
+Ruby's 'any?' method will determine if any element combined with the block's condition will evaluate to true or false and return said boolean expression. It will stop iterating through the array once the block's condition evaluates to true. Therefore, only 1 will be output since it's an odd number and the return value will be true.

@@ -1,0 +1,1 @@
+The functionality of the 'take' method can be determined by consulting Ruby's documentation. 'take' will accept an integer as an argument and return an array containing the amount of elements specified by said argument starting from the 0th index.

@@ -1,0 +1,1 @@
+Ruby's 'map' method will return an array of altered elements or key/value pairs based on the code within the block. In this case, the if statement will cause the string values with less than 4 characters to become nil. The strings longer than three characters will remain the same. Therefore, this particular instantiation of map will equal [nil, "bear"].
