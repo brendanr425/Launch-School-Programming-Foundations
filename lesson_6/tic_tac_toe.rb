@@ -1,5 +1,3 @@
-require 'pry'
-
 def marked_squares(arr)
   ["  #{arr[0]}  |  #{arr[1]}  |  #{arr[2]}",
    "  #{arr[3]}  |  #{arr[4]}  |  #{arr[5]}",
@@ -9,23 +7,26 @@ end
 def detection(board, mark)
   return_value = false
   board_state(board).each do |sub|
-    if sub.count(mark) == 2 && sub.any?{|ele| ele.class == Integer}
-      board[board.index(sub.select{|ele| ele.class == Integer}[0])] = 'O'
+    if sub.count(mark) == 2 && sub.any? { |ele| ele.class == Integer }
+      board[board.index(sub.select { |ele| ele.class == Integer }[0])] = 'O'
       return_value = true
       break
     end
+    next
   end
   return_value
 end
 
+# rubocop: disable Metrics/AbcSize
+
 def board_state(board)
-  [[board[0], board[1], board[2]], 
-   [board[3], board[4], board[5]], 
-   [board[6], board[7], board[8]], 
+  [[board[0], board[1], board[2]],
+   [board[3], board[4], board[5]],
+   [board[6], board[7], board[8]],
    [board[0], board[3], board[6]],
-   [board[1], board[4], board[7]], 
-   [board[2], board[5], board[8]], 
-   [board[0], board[4], board[8]], 
+   [board[1], board[4], board[7]],
+   [board[2], board[5], board[8]],
+   [board[0], board[4], board[8]],
    [board[2], board[4], board[6]]]
 end
 
@@ -61,12 +62,12 @@ def joinor(board, delimiter = ', ', last_delimiter = 'or')
   end
 end
 
-def winner?(board)
+def winner?(board, mark)
   answer = false
-  winning_indices.each do |arr| # Sort through a nested array of winning combinations. 'arr' represents each array. 
+  winning_indices.each do |arr|
     new_arr = []
-    arr.each { |ele| new_arr << board[ele] } # Sort through each nested array. 'ele' represents each element in arr. 
-    if new_arr == %w(X X X)
+    arr.each { |ele| new_arr << board[ele] }
+    if new_arr == [mark, mark, mark]
       answer = true
       break
     end
@@ -77,19 +78,6 @@ end
 def winning_indices
   [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
    [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
-end
-
-def loser?(board)
-  answer = false
-  winning_indices.each do |arr|
-    new_arr = []
-    arr.each { |ele| new_arr << board[ele] }
-    if new_arr == %w(O O O)
-      answer = true
-      break
-    end
-  end
-  answer
 end
 
 def player_choice(board)
@@ -103,21 +91,21 @@ def player_choice(board)
 end
 
 def computer_choice(board, player_mark, ai_mark)
-  if detection(board, ai_mark) == false && detection(board, player_mark) == false
+  if !detection(board, ai_mark) && !detection(board, player_mark)
     if board[4] == 5
       board[4] = ai_mark
     else
-      board[board.select{|ele| ele.class == Integer}.sample - 1] = ai_mark
+      board[board.select { |ele| ele.class == Integer }.sample - 1] = ai_mark
     end
   end
 end
 
-def place_piece!(board, current_player, player_mark, ai_mark)
+def place_piece!(board, current_player, player_mark, computer_mark)
   case current_player
   when 'X'
     player_choice(board)
   when 'O'
-    computer_choice(board, player_mark, ai_mark)
+    computer_choice(board, player_mark, computer_mark)
   end
 end
 
@@ -130,32 +118,10 @@ def alternate_player(current_player)
   end
 end
 
-def someone_won?(board)
-  winner?(board) || loser?(board)
-end
-
-def display_round_results(arr, user_score, comp_score)
-  if winner?(arr)
-    user_score += 1
-    puts "You won the round! Press any key to continue."
-    puts "Player: #{user_score} | Computer: #{comp_score}"
-    continue = gets.chomp
-  elsif loser?(arr)
-    comp_score += 1
-    puts "You lost this round. Press any key to continue."
-    puts "Player: #{user_score} | Computer: #{comp_score}"
-    continue = gets.chomp
-  else
-    puts "It's a tie! Press any key to continue."
-    puts "Player: #{user_score} | Computer: #{comp_score}"
-    continue = gets.chomp
-  end
-end
-
-def display_end_results(arr)
-  if winner?(arr)
+def display_end_results(arr, user_mark, computer_mark)
+  if winner?(arr, user_mark)
     puts 'You win!'
-  elsif loser?(arr)
+  elsif winner?(arr, computer_mark)
     puts 'You lose!'
   else
     puts "It's a tie!"
@@ -190,54 +156,59 @@ def full?(board)
   board.any? { |ele| ele.class == Integer } == false
 end
 
-user_choice = nil
-arr = nil
-USER_MARK = 'X'
-COMPUTER_MARK = 'O'
+def round_results(board, user_mark, computer_mark)
+  if winner?(board, user_mark)
+    puts 'You won the round! Press any key to continue.'
+  elsif winner?(board, computer_mark)
+    puts 'You lost this round. Press any key to continue.'
+  else
+    puts "It's a tie! Press any key to continue."
+  end
+end
 
+def prompt_and_score(empty_squares, user_score, comp_score)
+  puts "Choose a position to place a piece: #{joinor(empty_squares)}"
+  puts "Player: #{user_score} | Computer: #{comp_score}"
+end
+
+board = nil
+USER = 'X'.freeze
+COMPUTER = 'O'.freeze
+# rubocop: disable Metrics/BlockLength
 loop do
   user_score = 0
   comp_score = 0
+
   loop do
-    arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    current_player = USER_MARK
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    current_player = USER
     loop do
       clear
-      display_board(arr)
-      current = arr.select { |ele| ele.class == Integer }
-      puts "Choose a position to place a piece: #{joinor(current)}"
-      puts "Player: #{user_score} | Computer: #{comp_score}"
+      display_board(board)
+      empty_squares = board.select { |ele| ele.class == Integer }
+      prompt_and_score(empty_squares, user_score, comp_score)
 
-      place_piece!(arr, current_player, USER_MARK, COMPUTER_MARK)
+      place_piece!(board, current_player, USER, COMPUTER)
       current_player = alternate_player(current_player)
-      break if someone_won?(arr) || full?(arr)
+      break if winner?(board, USER) || winner?(board, COMPUTER) || full?(board)
     end
 
     clear
-    display_board(arr)
-    
-    if winner?(arr)
-      user_score += 1
-      puts "You won the round! Press any key to continue."
-      puts "Player: #{user_score} | Computer: #{comp_score}"
-      continue = gets.chomp
-    elsif loser?(arr)
-      comp_score += 1
-      puts "You lost this round. Press any key to continue."
-      puts "Player: #{user_score} | Computer: #{comp_score}"
-      continue = gets.chomp
-    else
-      puts "It's a tie! Press any key to continue."
-      puts "Player: #{user_score} | Computer: #{comp_score}"
-      continue = gets.chomp
-    end
+    display_board(board)
+    round_results(board, USER, COMPUTER)
+
+    user_score += 1 if winner?(board, USER)
+    comp_score += 1 if winner?(board, COMPUTER)
+
+    puts "Player: #{user_score} | Computer: #{comp_score}"
+    gets
 
     break if comp_score == 5 || user_score == 5
   end
 
   clear
-  display_board(arr)
-  display_end_results(arr)  
+  display_board(board)
+  display_end_results(board, USER, COMPUTER)
   puts "Press 'Y' to play again or any other key to quit."
   play_again = gets.chomp
   break unless play_again.casecmp?('y')
