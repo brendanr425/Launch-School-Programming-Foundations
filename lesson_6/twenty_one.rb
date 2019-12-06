@@ -18,7 +18,7 @@ def clear
   system('cls') || system('clear')
 end
 
-def convert_to_keys(deck) # convert to keys
+def convert_to_keys(deck)
   deck.map do |card|
     if card.class == Hash
       card.keys[0]
@@ -28,11 +28,11 @@ def convert_to_keys(deck) # convert to keys
   end
 end
 
-def convert_to_suits(deck) # convert to suits
+def convert_to_suits(deck)
   deck.map { |card| card.values[0] }
 end
 
-def convert_to_values(deck) # convert to values
+def convert_to_values(deck)
   deck.map do |card|
     if card.keys[0].class == Hash
       card.keys[0].values[0]
