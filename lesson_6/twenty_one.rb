@@ -1,7 +1,11 @@
 def ace_conversion(deck)
   deck.each_with_index do |_, idx|
-    if convert_to_values(deck[0..idx]).sum > 21 && deck.include?('ace' => 11)
-      deck[deck.index('ace' => 11)] = { 'ace' => 1 }
+    if total(deck[0..idx]) > 21 &&
+       convert_to_keys(deck).include?('ace' => 11)
+
+      deck[convert_to_keys(deck).index('ace' => 11)] =
+        { { 'ace' => 1 } =>
+        convert_to_suits(deck)[convert_to_keys(deck).index('ace' => 11)] }
     end
   end
 end
@@ -14,42 +18,40 @@ def clear
   system('cls') || system('clear')
 end
 
-def convert_to_keys(deck)
-  deck.map do |ele|
-    if ele.class == Hash
-      ele.keys[0]
+def convert_to_keys(deck) # convert to keys
+  deck.map do |card|
+    if card.class == Hash
+      card.keys[0]
     else
-      ele
+      card
     end
   end
 end
 
-def convert_to_values(deck)
-  deck.map do |ele|
-    if ele.class == Hash
-      ele.values[0]
-    else
-      ele
-    end
-  end
+def convert_to_suits(deck) # convert to suits
+  deck.map { |card| card.values[0] }
 end
 
-def dealer_round(wins, user_deck, comp_deck)
-  if convert_to_values(user_deck).sum < convert_to_values(comp_deck).sum
-    wins += 1
+def convert_to_values(deck) # convert to values
+  deck.map do |card|
+    if card.keys[0].class == Hash
+      card.keys[0].values[0]
+    else
+      card.keys[0]
+    end
   end
-  wins
 end
 
 def dealer_turn(deck, computer_deck, suits)
-  until convert_to_values(computer_deck).sum >= 17
+  ace_conversion(computer_deck)
+  until total(computer_deck) >= 17
     computer_deck << hit(deck, suits)
-    ace_conversion(computer_deck) if convert_to_values(computer_deck).sum > 21
+    ace_conversion(computer_deck)
   end
   computer_deck
 end
 
-def deck_and_total(user_deck, comp_deck)
+def print_decks_and_totals(user_deck, comp_deck)
   print_user_deck(user_deck)
   print_dealer_deck(comp_deck)
   display_totals(user_deck, comp_deck)
@@ -57,8 +59,8 @@ end
 
 def display_totals(user_deck, comp_deck)
   puts
-  puts "Player total: #{convert_to_values(user_deck).sum}"
-  puts "Dealer total: #{convert_to_values(comp_deck).sum}"
+  puts "Player total: #{total(user_deck)}"
+  puts "Dealer total: #{total(comp_deck)}"
 end
 
 def display_wins(user_wins, computer_wins)
@@ -69,11 +71,9 @@ def display_wins(user_wins, computer_wins)
 end
 
 def end_results(user_deck, comp_deck)
-  if convert_to_values(user_deck).sum >
-     convert_to_values(comp_deck).sum
+  if total(user_deck) > total(comp_deck)
     puts 'You win!'
-  elsif convert_to_values(user_deck).sum <
-        convert_to_values(comp_deck).sum
+  elsif total(user_deck) < total(comp_deck)
     puts 'You lose...'
   else
     puts "It's a tie!"
@@ -81,15 +81,16 @@ def end_results(user_deck, comp_deck)
 end
 
 def hit(deck, suits)
-  deck[random_suit = suits.sample].delete(deck[random_suit].sample)
+  { deck[random_suit = suits.sample].delete(deck[random_suit].sample) =>
+    random_suit }
 end
 
 def hit_or_stay?(user_deck, deck, suits)
   puts 'hit or stay?'
   answer = gets.chomp
-  if answer.casecmp?('hit')
+  if answer.casecmp?('h')
     user_deck << hit(deck, suits)
-  elsif answer.casecmp?('stay')
+  elsif answer.casecmp?('s')
     'break'
   else
     puts "Invalid input. Try again! (Press 'ENTER' to continue!)"
@@ -107,61 +108,29 @@ def initialize_deck(suits)
   deck
 end
 
+def introduction
+  clear
+  puts "Welcome to Twenty One! Here are the rules of the game: \n"
+  puts "\n- You and the dealer will start with two cards randomly
+  selected from the 52-card deck. \n"
+  puts "\n- If you decide to hit, type 'h'. This will result in
+  drawing another random card into your hand. If the sum of
+  all the cards in your hand exceeds 21, you lose. \n"
+
+  puts "\n- If you decide to stay, type 's'. This will end your turn
+  and start the dealer's. \n"
+
+  puts "\n- By the end of both players' turns, the player with the hand
+  that has the greater sum of values wins. \n"
+
+  puts "\nPress 'ENTER' to continue!"
+  gets.chomp
+end
+
 def play_again?
   puts "Play again? (Enter 'y' or simply press 'ENTER' to exit.)"
   answer = gets.chomp
   answer
-end
-
-def player_round(wins, user_deck, comp_deck)
-  if convert_to_values(user_deck).sum > convert_to_values(comp_deck).sum
-    wins += 1
-  end
-  wins
-end
-
-def print_dealer_deck(comp_deck)
-  comp_dup = convert_to_keys(comp_deck)
-
-  if comp_dup.length == 2
-    puts "Dealer has: #{comp_dup.join(' and ')}."
-  else
-    puts "Dealer has: #{comp_dup[0..-2].join(', ')}, and #{comp_dup[-1]}."
-  end
-end
-
-def print_decks(user_deck, comp_deck)
-  user_dup = convert_to_keys(user_deck)
-  computer_dup = convert_to_keys(comp_deck)
-
-  if user_dup.length == 2
-    puts "You have: #{user_dup.join(' and ')}."
-  else
-    puts "You have: #{user_dup[0..-2].join(', ')}, and #{user_dup[-1]}."
-  end
-
-  puts "Dealer has: #{computer_dup[0]} and unknown card."
-end
-
-def total_and_wins(user_hand, comp_hand, user_wins, comp_wins)
-  puts
-  deck_and_total(user_hand, comp_hand)
-  puts
-  display_wins(user_wins, comp_wins)
-  puts
-  puts "Press 'ENTER' for the next round!" if user_wins < 5 && comp_wins < 5
-  puts "Press 'ENTER' to continue!" if user_wins == 5 || comp_wins == 5
-  gets.chomp
-end
-
-def print_user_deck(user_deck)
-  user_dup = convert_to_keys(user_deck)
-
-  if user_dup.length == 2
-    puts "You have: #{user_dup.join(' and ')}."
-  else
-    puts "You have: #{user_dup[0..-2].join(', ')}, and #{user_dup[-1]}."
-  end
 end
 
 def player_turn(player_hand, dealer_hand, deck, suits)
@@ -176,15 +145,72 @@ def player_turn(player_hand, dealer_hand, deck, suits)
   end
 end
 
+def print_dealer_deck(comp_deck)
+  comp_dup = suit_and_value(comp_deck)
+
+  if comp_dup.length == 2
+    puts "Dealer has: #{comp_dup.join(' and ')}."
+  else
+    puts "Dealer has: #{comp_dup[0..-2].join(', ')}, and #{comp_dup[-1]}."
+  end
+end
+
+def print_decks(user_deck, comp_deck)
+  print_user_deck(user_deck)
+  print_dealer_deck(comp_deck)
+end
+
+def print_user_deck(user_deck)
+  user_dup = suit_and_value(user_deck)
+
+  if user_dup.length == 2
+    puts "You have: #{user_dup.join(' and ')}."
+  else
+    puts "You have: #{user_dup[0..-2].join(', ')}, and #{user_dup[-1]}."
+  end
+end
+
+def round(wins, deck1, deck2)
+  if total(deck1) > total(deck2)
+    wins += 1
+  end
+  wins
+end
+
 def starting_hand(deck, suits)
-  [deck[random_suit = suits.sample].delete(deck[random_suit].sample),
-   deck[random_suit = suits.sample].delete(deck[random_suit].sample)]
+  [{ deck[random_suit = suits.sample].delete(deck[random_suit].sample) => random_suit },
+   { deck[random_suit = suits.sample].delete(deck[random_suit].sample) => random_suit }]
+end
+
+def suit_and_value(card)
+  deck.map do |card|
+    if card.keys[0].class == Hash
+      "#{card.keys[0].keys[0]} of #{card.values[0]}"
+    else
+      "#{card.keys[0]} of #{card.values[0]}"
+    end
+  end
+end
+
+def total(deck)
+  convert_to_values(deck).sum
+end
+
+def total_and_wins(user_hand, comp_hand, user_wins, comp_wins)
+  puts
+  print_decks_and_totals(user_hand, comp_hand)
+  puts
+  display_wins(user_wins, comp_wins)
+  puts
+  puts "Press 'ENTER' for the next round!" if user_wins < 5 && comp_wins < 5
+  puts "Press 'ENTER' to continue!" if user_wins == 5 || comp_wins == 5
+  gets.chomp
 end
 
 suits = %w(hearts spades clubs diamonds)
 
-# rubocop: disable Metrics/BlockLength
 loop do
+  introduction
   player_wins = 0
   dealer_wins = 0
   until player_wins == 5 || dealer_wins == 5
@@ -210,8 +236,8 @@ loop do
         player_wins += 1
       else
         end_results(player_hand, dealer_hand)
-        player_wins = player_round(player_wins, player_hand, dealer_hand)
-        dealer_wins = dealer_round(dealer_wins, player_hand, dealer_hand)
+        player_wins = round(player_wins, player_hand, dealer_hand)
+        dealer_wins = round(dealer_wins, dealer_hand, player_hand)
       end
     end
 
@@ -219,6 +245,7 @@ loop do
   end
   break unless play_again?.casecmp?('y')
 end
+
 
 clear
 puts 'Thank you for playing!'
