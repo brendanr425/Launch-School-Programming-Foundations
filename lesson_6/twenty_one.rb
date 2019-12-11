@@ -6,12 +6,14 @@ def ace_conversion(deck)
       deck[convert_to_keys(deck).index('ace' => 11)] =
         { { 'ace' => 1 } =>
         convert_to_suits(deck)[convert_to_keys(deck).index('ace' => 11)] }
+    else
+      next
     end
   end
 end
 
 def busted?(deck)
-  convert_to_values(deck).sum > 21
+  total(deck) > 21
 end
 
 def clear
@@ -108,6 +110,7 @@ def initialize_deck(suits)
   deck
 end
 
+# rubocop: disable Metrics/MethodLength
 def introduction
   clear
   puts "Welcome to Twenty One! Here are the rules of the game: \n"
@@ -126,6 +129,7 @@ def introduction
   puts "\nPress 'ENTER' to continue!"
   gets.chomp
 end
+# rubocop: enable Metrics/MethodLength
 
 def play_again?
   puts "Play again? (Enter 'y' or simply press 'ENTER' to exit.)"
@@ -171,18 +175,17 @@ def print_user_deck(user_deck)
 end
 
 def round(wins, deck1, deck2)
-  if total(deck1) > total(deck2)
-    wins += 1
-  end
+  wins += 1 if total(deck1) > total(deck2)
   wins
 end
 
 def starting_hand(deck, suits)
-  [{ deck[random_suit = suits.sample].delete(deck[random_suit].sample) => random_suit },
-   { deck[random_suit = suits.sample].delete(deck[random_suit].sample) => random_suit }]
+  [hit(deck, suits), hit(deck, suits)]
 end
 
-def suit_and_value(card)
+# rubocop: disable Metrics/AbcSize
+
+def suit_and_value(deck)
   deck.map do |card|
     if card.keys[0].class == Hash
       "#{card.keys[0].keys[0]} of #{card.values[0]}"
@@ -191,6 +194,8 @@ def suit_and_value(card)
     end
   end
 end
+
+# rubocop: enable Metrics/AbcSize
 
 def total(deck)
   convert_to_values(deck).sum
@@ -208,6 +213,8 @@ def total_and_wins(user_hand, comp_hand, user_wins, comp_wins)
 end
 
 suits = %w(hearts spades clubs diamonds)
+
+# rubocop: disable Metrics/BlockLength
 
 loop do
   introduction
@@ -246,6 +253,7 @@ loop do
   break unless play_again?.casecmp?('y')
 end
 
+# rubocop: enable Metrics/BlockLength
 
 clear
 puts 'Thank you for playing!'
